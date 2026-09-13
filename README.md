@@ -23,10 +23,9 @@ Unlike older integrations that required manual `configuration.yaml` entries and 
 ### Manual Installation
 
 1. Download the repository source code or release archive.
-2. Extract and copy the `dreame_mc1808` folder into your Home Assistant's `custom_components` directory:
-   ```text
-   config/custom_components/dreame_mc1808/
-3.   Restart Home Assistant to load the integration. 
+2. Extract and copy the `dreame_mc1808` folder into your Home Assistant's `custom_components`<br>
+   directory: `config/custom_components/dreame_mc1808/`
+4.   Restart Home Assistant to load the integration. 
 
 
 
@@ -41,7 +40,7 @@ Unlike older integrations that required manual `configuration.yaml` entries and 
    - **Name**: Custom name for your entity (e.g., `Dreame Vacuum`).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/TWOJ_NICK_GITHUB/NAZWA_REPO/main/images/config_flow.png" alt="Dreame MC1808 Configuration Flow">
+  <img src="https://raw.githubusercontent.com/Piotras1/dreame-vacuum-1808-1c/main/images/config_flow.png" alt="Dreame MC1808 Configuration Flow">
 </p>
 
 5. Click **Submit** and enjoy your fully working vacuum with detailed diagnostic data!
