@@ -1,0 +1,10 @@
+{
+  "domain": "dreame_mc1808",
+  "name": "Dreame Vacuum (MC1808)",
+  "documentation": "https://github.com/Piotras1/dreame-vacuum-1808-1c",
+  "requirements": ["construct>=2.10.56", "cryptography>=41.0.0"],
+  "codeowners": ["@Piotras1"],
+  "config_flow": true,
+  "iot_class": "local_polling",
+  "version": "1.0.0"
+}

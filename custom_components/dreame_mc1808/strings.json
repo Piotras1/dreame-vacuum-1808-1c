@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Dreame Vacuum (MC1808)",
+        "description": "Enter the local IP address and 32-character miIO token of your Dreame MC1808 vacuum.",
+        "data": {
+          "host": "Host (IP address)",
+          "token": "Token",
+          "name": "Name"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the vacuum. Check the IP address and token.",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This vacuum is already configured."
+    }
+  }
+}
