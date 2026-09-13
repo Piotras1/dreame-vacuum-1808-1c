@@ -22,6 +22,8 @@ This component offers a modern, fully UI-configurable (Config Flow) integration 
 * **Diagnostic Sensors:** Direct tracking of active state binary sensors and hardware telemetry.
 * **Pure Python Client:** Native encryption and payload parser built directly into the integration (`construct` & `cryptography`).
 
+<img width="1158" height="846" alt="Zrzut ekranu (2585)" src="https://github.com/user-attachments/assets/65c15e10-2ae4-4aeb-956a-42a6f2ae3bc2" />
+
 ---
 
 ## Quick Installation via HACS
@@ -59,6 +61,8 @@ Click the button below to open this repository directly inside your Home Assista
    * **Name:** Custom name for the vacuum (defaults to `Dreame Vacuum`).
 5. Click **Submit**.
 
+<img width="565" height="170" alt="Zrzut ekranu (2583)" src="https://github.com/user-attachments/assets/8fb4f85f-db7b-4e49-9061-277780ebca3f" />
+   
 ---
 
 ## Available Services
@@ -70,8 +74,18 @@ Sends the vacuum cleaner to clean specific rectangular zones.
 ```yaml
 service: dreame_mc1808.vacuum_clean_zone
 target:
-  entity_id: vacuum.your_name
+  entity_id: vacuum.tadeusz
 data:
-  zone: [[-1000, -1000, 500, 500]]
+  zone: "-4650,-6450,-2000,-4750"
   repeats: 1
-   
+```
+
+## Supported Devices
+- Dreame MC1808
+- Xiaomi Mi Robot Vacuum-Mop 1C (STYTJ01ZHM)
+
+## License
+Distributed under the MIT License. See LICENSE for more information.
+
+---
+*Created by Piotras. Strictly engineered for reliability.*
