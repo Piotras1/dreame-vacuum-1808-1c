@@ -25,6 +25,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run HACS Action
-        uses: hacs/action@main
+        uses: hacs/action/generic@main
         with:
           category: integration
