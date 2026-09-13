@@ -4,7 +4,9 @@
 # Dreame Vacuum MC1808 / Xiaomi Mi Robot Vacuum-Mop 1C Custom Component
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/default)
-[![GitHub Release](https://img.shields.io/github/v/release/Piotras1/dreame-vacuum-1808-1c)](https://github.com/Piotras1/dreame-vacuum-1808-1c/releases)
+[![Version](https://img.shields.io/github/v/tag/Piotras1/dreame-vacuum-1808-1c?style=flat-square&logo=homeassistant&logoColor=white&color=70fa90&label=version)](https://github.com/Piotras1/dreame-vacuum-1808-1c)
+[![Last Commit](https://img.shields.io/github/last-commit/Piotras1/dreame-vacuum-1808-1c?style=flat-square&logo=github&logoColor=white&color=41BDF5&label=last%20update)](https://github.com/Piotras1/dreame-vacuum-1808-1c/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/Piotras1/dreame-vacuum-1808-1c?style=flat-square&color=blue&label=repo%20size)](https://github.com/Piotras1/dreame-vacuum-1808-1c)
 [![Maintainer](https://img.shields.io/badge/maintainer-Piotr%20%28%40Piotras1%29-blue)](https://github.com/Piotras1)
 
 Custom Home Assistant integration for **Dreame MC1808** (sold also as **Xiaomi Mi Robot Vacuum-Mop 1C** / `STYTJ01ZHM`). 
