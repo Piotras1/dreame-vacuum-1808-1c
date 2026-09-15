@@ -20,12 +20,14 @@ This component offers a modern, fully UI-configurable (Config Flow) integration 
 
 * **UI Configuration (Config Flow):** Easy setup via the Home Assistant frontend using host IP and local 32-character miIO token.
 * **Vacuum Controls:** Start, pause, stop, return to dock, and set fan speeds (Silent, Standard, Strong, Turbo).
-* **Zone Cleaning:** Built-in `dreame_mc1808.vacuum_clean_zone` service support.
+* **Segment / Room Cleaning:** Native `dreame_mc1808.vacuum_clean_segment` service support using room IDs.
+* **Zone Cleaning:** Built-in `dreame_mc1808.vacuum_clean_zone` service support for rectangular areas.
+* **Mop & Hardware Telemetry:** Read-only tracking for mop attachment status and active water flow level.
 * **Sensors:** Monitor battery level, current status, filter life, main/side brush life, total cleaning area, and cleaning time.
 * **Diagnostic Sensors:** Direct tracking of active state binary sensors and hardware telemetry.
 * **Pure Python Client:** Native encryption and payload parser built directly into the integration (`construct` & `cryptography`).
 
-<img width="1158" height="846" alt="Zrzut ekranu (2585)" src="https://github.com/user-attachments/assets/65c15e10-2ae4-4aeb-956a-42a6f2ae3bc2" />
+<img width="1016" height="827" alt="Dreame Vacuum ( MC1808 )" src="https://github.com/user-attachments/assets/99fe08fa-b987-49a1-9ce8-9958e4e033b5" />
 
 ---
 
@@ -64,8 +66,8 @@ Click the button below to open this repository directly inside your Home Assista
    * **Name:** Custom name for the vacuum (defaults to `Dreame Vacuum`).
 5. Click **Submit**.
 
-<img width="565" height="170" alt="Zrzut ekranu (2583)" src="https://github.com/user-attachments/assets/8fb4f85f-db7b-4e49-9061-277780ebca3f" />
-   
+<img width="565" height="170" alt="Dreame Vacuum MC1808" src="https://github.com/user-attachments/assets/8fb4f85f-db7b-4e49-9061-277780ebca3f" />
+
 ---
 
 ## Available Services
@@ -77,11 +79,26 @@ Sends the vacuum cleaner to clean specific rectangular zones.
 ```yaml
 service: dreame_mc1808.vacuum_clean_zone
 target:
-  entity_id: vacuum.tadeusz
+  entity_id: vacuum.your_name_vacum
 data:
   zone: "-4650,-6450,-2000,-4750"
   repeats: 1
 ```
+
+### `dreame_mc1808.vacuum_clean_segment`
+Sends the vacuum cleaner to clean specific room(s) by their native segment IDs.
+
+**Service Data Payload:**
+```yaml
+action: dreame_mc1808.vacuum_clean_segment
+target:
+  entity_id: vacuum.your_name_vacum
+data:
+  room_ids: [3]
+  repeats: 1
+  fan_speed: 1
+```
+---
 
 ## Supported Devices
 - Dreame MC1808
