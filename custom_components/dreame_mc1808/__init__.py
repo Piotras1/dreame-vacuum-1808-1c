@@ -51,6 +51,11 @@ SERVICE_CLEAN_ZONE = "vacuum_clean_zone"
 ATTR_ZONE = "zone"
 ATTR_REPEATS = "repeats"
 
+# EXPERIMENTAL - see dreame_client.py's segment_cleanup() docstring.
+SERVICE_CLEAN_SEGMENT = "vacuum_clean_segment"
+ATTR_ROOM_IDS = "room_ids"
+ATTR_FAN_SPEED = "fan_speed"
+
 PLATFORMS: list[Platform] = [Platform.VACUUM, Platform.SENSOR, Platform.BINARY_SENSOR]
 
 
@@ -129,6 +134,24 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             ),
         },
         func="async_clean_zone",
+    )
+    # EXPERIMENTAL - see dreame_client.py's segment_cleanup() docstring
+    # for sourcing/caveats. Test on real hardware before relying on it.
+    service.async_register_platform_entity_service(
+        hass,
+        DOMAIN,
+        SERVICE_CLEAN_SEGMENT,
+        entity_domain=VACUUM_ENTITY_DOMAIN,
+        schema={
+            vol.Required(ATTR_ROOM_IDS): vol.All(cv.ensure_list, [vol.Coerce(int)]),
+            vol.Optional(ATTR_REPEATS, default=1): vol.All(
+                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            ),
+            vol.Optional(ATTR_FAN_SPEED, default=1): vol.All(
+                vol.Coerce(int), vol.Clamp(min=0, max=3)
+            ),
+        },
+        func="async_clean_segment",
     )
     return True
 

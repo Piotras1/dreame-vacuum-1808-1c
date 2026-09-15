@@ -249,3 +249,21 @@ class DreameVacuumEntityImpl(DreameVacuumEntity, StateVacuumEntity):
             await self.coordinator.async_request_refresh()
         except (OSError, DeviceException) as exc:
             _LOGGER.error("Unable to send zoned_clean command to the vacuum: %s", exc)
+
+    async def async_clean_segment(self, room_ids, repeats=1, fan_speed=1):
+        """Clean specific room/segment IDs.
+
+        EXPERIMENTAL - see dreame_client.py's segment_cleanup() docstring
+        for sourcing and caveats. Not verified by this project against a
+        physical device; test carefully (one room first) before trusting
+        it, and report back what actually happens on real hardware.
+        """
+        try:
+            await self.hass.async_add_executor_job(
+                self.device.segment_cleanup, room_ids, repeats, fan_speed
+            )
+            await self.coordinator.async_request_refresh()
+        except (OSError, DeviceException) as exc:
+            _LOGGER.error(
+                "Unable to send segment_clean command to the vacuum: %s", exc
+            )

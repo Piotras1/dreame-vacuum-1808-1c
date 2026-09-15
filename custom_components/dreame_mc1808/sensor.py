@@ -34,7 +34,28 @@ class DreameSensorDescription(SensorEntityDescription):
     value_fn: Callable[[DreameStatus], object] = lambda status: None
 
 
+MOP_MODE_NAMES = {1: "Low", 2: "Medium", 3: "High"}
+WATER_BOX_STATES = {0: "Tank off",1: "Tank on"}
+
 SENSOR_DESCRIPTIONS: tuple[DreameSensorDescription, ...] = (
+    DreameSensorDescription(
+        key="mop_water_level",
+        name="Mop water level",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon="mdi:water-percent",
+        # Read-only per the official MIoT spec (no write access documented
+        # for this property) - see dreame_client.py for details.
+        value_fn=lambda status: MOP_MODE_NAMES.get(status.mop_mode, status.mop_mode),
+    ),
+    DreameSensorDescription(
+        key="water_tank_status",
+        name="Water tank status",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon="mdi:cup-water",
+        # Spec marks this "notify"-only (no plain "read" access), so it may
+        # come back empty on a simple property query - best effort.
+        value_fn=lambda status: WATER_BOX_STATES.get(status.water_box, status.water_box),
+    ),
     DreameSensorDescription(
         key="battery_level",
         name="Battery",

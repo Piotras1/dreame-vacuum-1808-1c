@@ -871,6 +871,19 @@ class DreameStatus:
         },
         default=None,
     )
+    # siid 18 (clean) - water-box status: read-only per spec (access "N"
+    # only - notify - not formally "R", so it may not respond reliably to
+    # a plain get_properties query on real hardware; exposed as best-effort).
+    water_box: int = field(
+        metadata={"siid": 18, "piid": 9, "access": ["notify"]}, default=None
+    )
+    # siid 18 (clean) - mop water level. Documented as read-only (access
+    # "R"/"N" - no "W"): the spec gives no supported way to *set* this via
+    # a plain property write, so we only expose it for display.
+    mop_mode: int = field(
+        metadata={"siid": 18, "piid": 20, "access": ["read", "notify"]},
+        default=None,
+    )
     last_clean: int = field(
         metadata={"siid": 18, "piid": 13, "access": ["read", "notify"]}, default=None
     )
@@ -1004,6 +1017,30 @@ class DreameVacuum(MiotDevice):
     def zone_cleanup(self, coords) -> None:
         """Start zone cleaning."""
         payload = [{"piid": 1, "value": 19}, {"piid": 21, "value": coords}]
+        return self.call_action(18, 1, payload)
+
+    @command()
+    def segment_cleanup(self, room_ids, repeats=1, fan_speed=1) -> None:
+        """Clean specific room/segment IDs.
+
+        EXPERIMENTAL - sourced from a community-documented MIoT config
+        specifically for dreame.vacuum.mc1808 (GitHub discussion:
+        PiotrMachowski/lovelace-xiaomi-vacuum-map-card#406, comment by
+        @rogodra / @StarterCraft), not independently verified against a
+        physical device by this project. At least one user in that same
+        thread reported getting a "success" response with no physical
+        movement on their unit. Test carefully on real hardware, starting
+        with a single room, before relying on this.
+
+        room_ids: list of int room/segment IDs (from e.g. Xiaomi Cloud Map
+        Extractor). repeats: cleaning passes per room (1-3 typical).
+        fan_speed: 0=Silent, 1=Standard, 2=Medium, 3=Turbo.
+        """
+        selects = [[room_id, repeats, fan_speed, 3, 1] for room_id in room_ids]
+        payload = [
+            {"piid": 1, "value": 18},
+            {"piid": 21, "value": json.dumps({"selects": selects})},
+        ]
         return self.call_action(18, 1, payload)
 
     # siid 21 (remote)

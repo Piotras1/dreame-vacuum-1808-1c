@@ -21,3 +21,41 @@ vacuum_clean_zone:
         number:
           min: 1
           max: 3
+
+vacuum_clean_segment:
+  name: Clean room/segment (EXPERIMENTAL)
+  description: >
+    Clean specific room/segment IDs (e.g. from Xiaomi Cloud Map Extractor).
+    EXPERIMENTAL: sourced from a community-documented config for this exact
+    model, not verified by this project against real hardware. At least one
+    reported case got a "success" response with no physical movement. Test
+    with a single room first and watch the vacuum.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    room_ids:
+      name: Room IDs
+      description: One or more room/segment IDs to clean.
+      required: true
+      example: "[3, 5]"
+      selector:
+        object:
+    repeats:
+      name: Repeats
+      required: false
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 3
+    fan_speed:
+      name: Fan speed
+      description: "0=Silent, 1=Standard, 2=Medium, 3=Turbo"
+      required: false
+      default: 1
+      selector:
+        number:
+          min: 0
+          max: 3
+
