@@ -112,7 +112,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumCoordinator]):
 
 # --- integration setup --------------------------------------------------
 
-
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Register integration-wide services.
 
