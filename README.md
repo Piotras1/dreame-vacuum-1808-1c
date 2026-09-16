@@ -5,6 +5,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/default)
 [![Downloads](https://img.shields.io/github/downloads/Piotras1/dreame-vacuum-1808-1c/total?style=flat-square&logo=homeassistant&logoColor=white&color=41BDF5&label=downloads)](https://github.com/Piotras1/dreame-vacuum-1808-1c/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/Piotras1/dreame-vacuum-1808-1c?style=flat-square&logo=homeassistant&logoColor=white&color=41BDF5)](https://github.com/Piotras1/dreame-vacuum-1808-1c/stargazers)
 [![Version](https://img.shields.io/github/v/tag/Piotras1/dreame-vacuum-1808-1c?style=flat-square&logo=homeassistant&logoColor=white&color=70fa90&label=version)](https://github.com/Piotras1/dreame-vacuum-1808-1c)
 [![Last Commit](https://img.shields.io/github/last-commit/Piotras1/dreame-vacuum-1808-1c?style=flat-square&logo=github&logoColor=white&color=41BDF5&label=last%20update)](https://github.com/Piotras1/dreame-vacuum-1808-1c/commits/main)
 [![Repo Size](https://img.shields.io/github/repo-size/Piotras1/dreame-vacuum-1808-1c?style=flat-square&color=blue&label=repo%20size)](https://github.com/Piotras1/dreame-vacuum-1808-1c)
