@@ -56,7 +56,7 @@ SERVICE_CLEAN_SEGMENT = "vacuum_clean_segment"
 ATTR_ROOM_IDS = "room_ids"
 ATTR_FAN_SPEED = "fan_speed"
 
-PLATFORMS: list[Platform] = [Platform.VACUUM, Platform.SENSOR, Platform.BINARY_SENSOR]
+PLATFORMS: list[Platform] = [Platform.VACUUM, Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER, Platform.SELECT, Platform.BUTTON]
 
 
 # --- coordinator -------------------------------------------------------------
