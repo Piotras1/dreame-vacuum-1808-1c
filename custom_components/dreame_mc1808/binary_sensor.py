@@ -16,13 +16,17 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import DOMAIN, DreameVacuumCoordinator, DreameVacuumEntity
-from .dreame_client import ChargeStatus
 
 _LOGGER = logging.getLogger(__name__)
 
-# ChargeStatus values that mean "actively charging" (see dreame_client.py).
-# 2 = Not_charging, 5 = Go_charging (heading to dock, not yet charging).
-CHARGING_STATES = {ChargeStatus.Charging.value, ChargeStatus.Charging2.value}
+# Same "status" field vacuum.py uses for the main activity (see
+# STATE_CODE_TO_ACTIVITY in vacuum.py). Code 6 = actively charging on the
+# dock. Once the battery hits 100% the device reports Idle (2) instead,
+# even while still physically on the dock - confirmed against real
+# hardware behavior. The separate "state"/ChargeStatus property (siid 2)
+# was tried first but doesn't track reliably on this firmware, so we key
+# off the main status field instead.
+CHARGING_STATUS_CODE = 6
 
 
 async def async_setup_entry(
@@ -47,6 +51,6 @@ class DreameChargingBinarySensor(DreameVacuumEntity, BinarySensorEntity):
     def is_on(self) -> bool | None:
         """Return True while the vacuum is actively charging."""
         status = self.coordinator.data
-        if status is None or status.state is None:
+        if status is None or status.status is None:
             return None
-        return int(status.state) in CHARGING_STATES
+        return int(status.status) == CHARGING_STATUS_CODE
