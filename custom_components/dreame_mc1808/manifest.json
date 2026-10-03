@@ -4,7 +4,7 @@
   "codeowners": ["@Piotras1"],
   "config_flow": true,
   "documentation": "https://github.com/Piotras1/dreame-vacuum-1808-1c",
-  "iot_class": "local_poll",
+  "iot_class": "local_polling",
   "issue_tracker": "https://github.com/Piotras1/dreame-vacuum-1808-1c/issues",
   "requirements": ["construct>=2.10.56"],
   "version": "2.0.2"
