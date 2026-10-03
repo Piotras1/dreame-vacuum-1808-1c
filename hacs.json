@@ -1,4 +1,6 @@
 {
   "name": "Dreame Vacuum (MC1808)",
-  "render_readme": true
+  "render_readme": true,
+  "zip_release": true,
+  "filename": "dreame_mc1808.zip"
 }
