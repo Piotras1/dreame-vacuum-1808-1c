@@ -1,0 +1,48 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Aspiradora Dreame (MC1808)",
+        "description": "Ingrese la dirección IP y el token miIO de 32 caracteres de su aspiradora Dreame MC1808.",
+        "data": {
+          "host": "Host (dirección IP)",
+          "token": "Token",
+          "name": "Nombre"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigurar aspiradora Dreame",
+        "description": "Actualiza los datos de conexión de {name}. Manteniendo todas las entidades e identificadores existentes.",
+        "data": {
+          "host": "Host (dirección IP)",
+          "token": "Token",
+          "name": "Nombre"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se pudo conectar con la aspiradora. Compruebe la dirección IP y el token.",
+      "unknown": "Error inesperado"
+    },
+    "abort": {
+      "already_configured": "La aspiradora ya estaba configurada.",
+      "reconfigure_successful": "Reconfiguración correcta. La integración se recargará con la nueva configuración."
+    }
+  },
+  "services": {
+    "update_connection": {
+      "name": "Actualizar conexión",
+      "description": "Actualiza la dirección IP (y opcionalmente el token) de la aspiradora, valida la conexión y recarga la integración. Útil en automatizaciones cuando el dispositivo recibe una nueva IP.",
+      "fields": {
+        "host": {
+          "name": "Host (dirección IP)",
+          "description": "Nueva dirección IP de la aspiradora."
+        },
+        "token": {
+          "name": "Token",
+          "description": "Nuevo token miIO de 32 caracteres. Omitir para conservar el token actual."
+        }
+      }
+    }
+  }
+}

@@ -9,6 +9,15 @@
           "token": "Token",
           "name": "Name"
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Dreame Vacuum",
+        "description": "Update the connection details for {name}. This keeps all existing entities and IDs.",
+        "data": {
+          "host": "Host (IP address)",
+          "token": "Token",
+          "name": "Name"
+        }
       }
     },
     "error": {
@@ -16,7 +25,24 @@
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "This vacuum is already configured."
+      "already_configured": "This vacuum is already configured.",
+      "reconfigure_successful": "Successfully reconfigured. The integration will reload with the new settings."
+    }
+  },
+  "services": {
+    "update_connection": {
+      "name": "Update connection",
+      "description": "Update the IP address (and optionally the token) of the vacuum, validate the new connection, and reload the integration. Useful in automations when the device receives a new IP address.",
+      "fields": {
+        "host": {
+          "name": "Host (IP address)",
+          "description": "New IP address of the vacuum."
+        },
+        "token": {
+          "name": "Token",
+          "description": "New 32-character miIO token. Omit to keep the current token."
+        }
+      }
     }
   }
 }

@@ -59,3 +59,27 @@ vacuum_clean_segment:
           min: 0
           max: 3
 
+
+update_connection:
+  name: Update connection
+  description: >
+    Update the IP address (and optionally the token) of the vacuum,
+    validate the new connection, and reload the integration.
+    Useful in automations when the device receives a new IP address.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    host:
+      name: Host (IP address)
+      description: New IP address of the vacuum.
+      required: true
+      example: "192.168.1.50"
+      selector:
+        text:
+    token:
+      name: Token
+      description: New 32-character miIO token. Omit to keep the current token.
+      required: false
+      selector:
+        text:

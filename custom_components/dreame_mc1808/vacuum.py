@@ -11,10 +11,11 @@ from homeassistant.components.vacuum import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.const import CONF_HOST, CONF_TOKEN
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import DOMAIN, DreameVacuumCoordinator, DreameVacuumEntity
-from .dreame_client import DeviceException
+from .dreame_client import DeviceException, DreameVacuum
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -267,3 +268,34 @@ class DreameVacuumEntityImpl(DreameVacuumEntity, StateVacuumEntity):
             _LOGGER.error(
                 "Unable to send segment_clean command to the vacuum: %s", exc
             )
+
+    async def async_update_connection(self, host: str, token: str | None = None) -> None:
+        """Update the vacuum's IP (and optionally token) and reload the integration.
+
+        Intended for automations that detect a new IP address. Validates the
+        connection before committing the change so a bad address does not
+        leave the entry in a broken state.
+        """
+        entry = self.coordinator.entry
+        new_token = token if token is not None else entry.data.get(CONF_TOKEN)
+        if not new_token:
+            _LOGGER.error("No token available to update connection")
+            return
+
+        device = DreameVacuum(host, new_token)
+        try:
+            await self.hass.async_add_executor_job(device.status)
+            info = await self.hass.async_add_executor_job(device.info)
+            mac = info.mac_address
+        except (DeviceException, OSError) as exc:
+            _LOGGER.error("Failed to validate new connection to %s: %s", host, exc)
+            raise
+
+        new_data = {**entry.data, CONF_HOST: host, CONF_TOKEN: new_token}
+        update_kwargs = {"data": new_data}
+        if mac:
+            update_kwargs["unique_id"] = mac
+
+        self.hass.config_entries.async_update_entry(entry, **update_kwargs)
+        await self.hass.config_entries.async_reload(entry.entry_id)
+        _LOGGER.info("Updated connection for %s to host %s and reloaded", entry.title, host)

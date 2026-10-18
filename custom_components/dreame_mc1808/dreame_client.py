@@ -295,8 +295,16 @@ class MiIOProtocol:
                 codecs.encode(m.checksum, "hex"),
             )
         else:
-            _LOGGER.error("Unable to discover a device at address %s", self.ip)
-            raise DeviceException("Unable to discover the device %s" % self.ip)
+            _LOGGER.error(
+                "Unable to discover a device at %s. "
+                "Check that the vacuum is powered on, on the same network, "
+                "and that the IP address is correct (it may have changed).",
+                self.ip,
+            )
+            raise DeviceException(
+                f"Unable to discover the device at {self.ip}. "
+                "Verify the vacuum is powered on, on the same LAN, and the IP is still valid."
+            )
 
         return m
 
@@ -596,9 +604,16 @@ class Device:
             try:
                 properties_to_request = _props[:max_properties]
                 values.extend(self.send(get_property_method, properties_to_request))
-            except DeviceException:
-                _LOGGER.error("Unable to request properties %s", properties_to_request)
-                values.append(["request-failed"] * max_properties)
+            except DeviceException as exc:
+                _LOGGER.error(
+                    "Unable to request properties %s: %s",
+                    properties_to_request,
+                    exc,
+                )
+                raise DeviceException(
+                    f"Failed to request properties from device at {self.ip}: {exc}. "
+                    "The vacuum may be unreachable, asleep, or the IP may have changed."
+                ) from exc
             if max_properties is None:
                 break
 
@@ -674,12 +689,29 @@ class MiotDevice(Device):
 
             property_mapping[field_name] = {"siid": siid, "piid": piid}
 
-        response = {
-            prop["did"]: prop["value"] if prop["code"] == 0 else None
-            for prop in self.get_properties_for_mapping(
-                property_mapping, max_properties=cls._max_properties
+        raw = self.get_properties_for_mapping(
+            property_mapping, max_properties=cls._max_properties
+        )
+
+        response = {}
+        for prop in raw:
+            if not isinstance(prop, dict):
+                _LOGGER.warning(
+                    "Unexpected property response item (expected dict, got %s): %r",
+                    type(prop).__name__,
+                    prop,
+                )
+                continue
+            did = prop.get("did")
+            if did is None:
+                continue
+            response[did] = prop.get("value") if prop.get("code") == 0 else None
+
+        if not response and raw:
+            raise DeviceException(
+                f"Device at {self.ip} returned no usable property data. "
+                "It may be unreachable, the response was malformed or another device is using the IP address."
             )
-        }
 
         return cls(**response)
 

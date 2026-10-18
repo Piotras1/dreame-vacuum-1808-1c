@@ -9,6 +9,15 @@
           "token": "Token",
           "name": "Name"
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Dreame Vacuum",
+        "description": "Update the connection details for {name}. This keeps all existing entities and IDs.",
+        "data": {
+          "host": "Host (IP address)",
+          "token": "Token",
+          "name": "Name"
+        }
       }
     },
     "error": {
@@ -16,7 +25,8 @@
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "This vacuum is already configured."
+      "already_configured": "This vacuum is already configured.",
+      "reconfigure_successful": "Successfully reconfigured. The integration will reload with the new settings."
     }
   }
 }

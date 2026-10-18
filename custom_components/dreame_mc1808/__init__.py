@@ -56,6 +56,10 @@ SERVICE_CLEAN_SEGMENT = "vacuum_clean_segment"
 ATTR_ROOM_IDS = "room_ids"
 ATTR_FAN_SPEED = "fan_speed"
 
+SERVICE_UPDATE_CONNECTION = "update_connection"
+ATTR_HOST = "host"
+ATTR_TOKEN = "token"
+
 PLATFORMS: list[Platform] = [Platform.VACUUM, Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER, Platform.SELECT, Platform.BUTTON]
 
 
@@ -84,6 +88,12 @@ class DreameVacuumCoordinator(DataUpdateCoordinator[DreameStatus]):
             return await self.hass.async_add_executor_job(self.device.status)
         except (DeviceException, OSError) as exc:
             raise UpdateFailed(f"Error communicating with vacuum: {exc}") from exc
+        except Exception as exc:
+            # Catch anything unexpected so HA shows a clean message instead of a raw traceback
+            _LOGGER.exception("Unexpected error while fetching vacuum status")
+            raise UpdateFailed(
+                f"Unexpected error fetching vacuum status: {exc}"
+            ) from exc
 
 
 # --- shared entity base ------------------------------------------------------
@@ -152,6 +162,17 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             ),
         },
         func="async_clean_segment",
+    )
+    service.async_register_platform_entity_service(
+        hass,
+        DOMAIN,
+        SERVICE_UPDATE_CONNECTION,
+        entity_domain=VACUUM_ENTITY_DOMAIN,
+        schema={
+            vol.Required(ATTR_HOST): cv.string,
+            vol.Optional(ATTR_TOKEN): vol.All(str, vol.Length(min=32, max=32)),
+        },
+        func="async_update_connection",
     )
     return True
 
