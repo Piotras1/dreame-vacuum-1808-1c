@@ -25,6 +25,7 @@ This component offers a modern, fully UI-configurable (Config Flow) integration 
 * **Maintenance & Resets:** One-click reset buttons for main brush, side brush, and filter life directly from the configuration UI.
 * **Detailed Diagnostics:** Real-time tracking of consumables (brush & filter life in % and remaining hours), mop water level status, water tank attachment, cleaning area ($m^2$), cleaning duration, and total cycle count.
 * **Segment & Zone Cleaning:** Native support for room cleaning by segment ID (`dreame_mc1808.vacuum_clean_segment`) and custom area cleaning (`dreame_mc1808.vacuum_clean_zone`).
+* **Dynamic IP Updating:** Dedicated service (`dreame_mc1808.update_connection`) for updating IP/Token automatically via network scripts or automations.
 * **Pure Python Client:** Built-in encryption and payload parser direct in the integration with zero external daemon dependencies.
 
 <img width="381" height="839" alt="Dreame Vacuum ( MC1808 )-Controls" src="https://github.com/user-attachments/assets/29104775-ac40-45ab-9ccc-6074ff9ea5c9" />
@@ -56,8 +57,9 @@ Click the button below to open this repository directly inside your Home Assista
 
 ---
 
-## Configuration
+## Configuration & Reconfiguration
 
+### Initial Setup
 1. Go to **Settings** -> **Devices & Services**.
 2. Click **Add Integration** in the bottom right corner.
 3. Search for **Dreame Vacuum (MC1808)**.
@@ -68,6 +70,13 @@ Click the button below to open this repository directly inside your Home Assista
 5. Click **Submit**.
 
 <img width="565" height="170" alt="Dreame Vacuum MC1808" src="https://github.com/user-attachments/assets/8fb4f85f-db7b-4e49-9061-277780ebca3f" />
+
+### Updating IP or Token (Reconfigure Flow)
+If your vacuum changes its IP address or token:
+1. Go to **Settings** -> **Devices & Services**.
+2. Find **Dreame Vacuum (MC1808)** and click **Reconfigure**.
+3. Enter the new IP address or token and submit.
+   * *All existing entities, historical data, and IDs will be preserved!*
 
 ---
 
@@ -99,11 +108,27 @@ data:
   repeats: 1
   fan_speed: 1
 ```
+
+### Updates the vacuum's IP address (and optionally token) programmatically. Designed for use with MAC-based DHCP/router tracking automations.
+
+**Service Data Payload:**
+```yaml
+action: dreame_mc1808.update_connection
+target:
+  entity_id: vacuum.your_vacuum_name
+data:
+  host: "192.168.1.150"
+  token: "32_character_token_here" # Optional
+```
+
 ---
 
 ## Supported Devices
 - Dreame MC1808
 - Xiaomi Mi Robot Vacuum-Mop 1C (STYTJ01ZHM)
+
+## Contributors
+Special thanks to [@MarioFinale](https://github.com/MarioFinale) for adding MAC-based identity, UI reconfiguration flow, and the `update_connection` service!
 
 ## License
 Distributed under the MIT License. See LICENSE for more information.
