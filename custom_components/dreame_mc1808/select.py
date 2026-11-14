@@ -8,6 +8,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import DOMAIN, DreameVacuumCoordinator, DreameVacuumEntity
+from .dreame_client import MOP_MODE_NAMES
 from .vacuum import SPEED_CODE_TO_NAME
 
 _LOGGER = logging.getLogger(__name__)
@@ -16,9 +17,11 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up Dreame fan speed select entity."""
+    """Set up Dreame select entities (fan speed, mop water level)."""
     coordinator: DreameVacuumCoordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities([DreameFanSpeedSelect(coordinator)])
+    async_add_entities(
+        [DreameFanSpeedSelect(coordinator), DreameMopModeSelect(coordinator)]
+    )
 
 
 class DreameFanSpeedSelect(DreameVacuumEntity, SelectEntity):
@@ -55,3 +58,39 @@ class DreameFanSpeedSelect(DreameVacuumEntity, SelectEntity):
             await self.coordinator.async_request_refresh()
         except Exception as exc:
             _LOGGER.error("Failed to set fan speed to %s: %s", option, exc)
+
+
+class DreameMopModeSelect(DreameVacuumEntity, SelectEntity):
+    """Mop water level (Low / Medium / High)."""
+
+    _attr_name = "Mop water level"
+    _attr_icon = "mdi:water-percent"
+    _attr_options = list(MOP_MODE_NAMES.values())
+
+    def __init__(self, coordinator: DreameVacuumCoordinator) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{coordinator.entry.entry_id}_mop_mode_select"
+        self._name_to_code = {v: k for k, v in MOP_MODE_NAMES.items()}
+
+    @property
+    def current_option(self) -> str | None:
+        """Return the current mop water level."""
+        status = self.coordinator.data
+        if status is None or status.mop_mode is None:
+            return None
+        return MOP_MODE_NAMES.get(status.mop_mode)
+
+    async def async_select_option(self, option: str) -> None:
+        """Change the mop water level."""
+        level = self._name_to_code.get(option)
+        if level is None:
+            _LOGGER.error("Unknown mop water level option: %s", option)
+            return
+
+        try:
+            await self.hass.async_add_executor_job(
+                self.coordinator.device.set_mop_mode, level
+            )
+        except Exception as exc:
+            _LOGGER.error("Failed to set mop water level to %s: %s", option, exc)
+        await self.coordinator.async_request_refresh()

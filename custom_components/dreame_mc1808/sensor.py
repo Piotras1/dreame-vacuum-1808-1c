@@ -22,7 +22,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import DOMAIN, DreameVacuumCoordinator, DreameVacuumEntity
-from .dreame_client import DreameStatus
+from .dreame_client import MOP_MODE_NAMES, DreameStatus
 from .vacuum import ERROR_CODE_TO_ERROR
 from .vacuum import STATE_CODE_TO_ACTIVITY
 
@@ -36,7 +36,6 @@ class DreameSensorDescription(SensorEntityDescription):
     value_fn: Callable[[DreameStatus], object] = lambda status: None
 
 
-MOP_MODE_NAMES = {1: "Low", 2: "Medium", 3: "High"}
 WATER_BOX_STATES = {0: "Tank off", 1: "Tank on"}
 
 SENSOR_DESCRIPTIONS: tuple[DreameSensorDescription, ...] = (

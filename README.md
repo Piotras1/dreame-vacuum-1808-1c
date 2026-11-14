@@ -20,7 +20,7 @@ This component offers a modern, fully UI-configurable (Config Flow) integration 
 ## Features
 
 * **UI Configuration (Config Flow):** Easy setup via the Home Assistant frontend using the host IP address and local 32-character miIO token.
-* **Full Vacuum Controls:** Start, pause, stop, return to dock, locate device ("Find me"), and set fan speeds (Silent, Standard, Strong, Turbo) or speaker volume.
+* **Full Vacuum Controls:** Start, pause, stop, return to dock, locate device ("Find me"), set fan speeds (Silent, Standard, Strong, Turbo), mop water level (Low, Medium, High) or speaker volume.
 * **Status & Activity Sensor:** Dedicated `vacuum_status` sensor mapped to native state strings with an available state list in attributes for easier automations.
 * **Maintenance & Resets:** One-click reset buttons for main brush, side brush, and filter life directly from the configuration UI.
 * **Detailed Diagnostics:** Real-time tracking of consumables (brush & filter life in % and remaining hours), mop water level status, water tank attachment, cleaning area ($m^2$), cleaning duration, and total cycle count.
