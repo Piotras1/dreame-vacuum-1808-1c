@@ -128,7 +128,9 @@ data:
 - Xiaomi Mi Robot Vacuum-Mop 1C (STYTJ01ZHM)
 
 ## Contributors
-Special thanks to [@MarioFinale](https://github.com/MarioFinale) for adding MAC-based identity, UI reconfiguration flow, and the `update_connection` service!
+Special thanks to:
+* [@MarioFinale](https://github.com/MarioFinale) for adding MAC-based identity, UI reconfiguration flow, and the `update_connection` service!
+* [@maximminton](https://github.com/maximminton) for adding mop water level control (`Low` / `Medium` / `High`), verifying write support on firmware 1097+, and including unit tests!
 
 ## License
 Distributed under the MIT License. See LICENSE for more information.
