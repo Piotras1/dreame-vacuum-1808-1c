@@ -775,6 +775,10 @@ class MiotDevice(Device):
 # ---------------------------------------------------------------------------
 
 
+# Mop water level (siid 18 / piid 20) - single source for sensor and select.
+MOP_MODE_NAMES = {1: "Low", 2: "Medium", 3: "High"}
+
+
 class ChargeStatus(Enum):
     Charging = 1
     Not_charging = 2
@@ -909,11 +913,12 @@ class DreameStatus:
     water_box: int = field(
         metadata={"siid": 18, "piid": 9, "access": ["notify"]}, default=None
     )
-    # siid 18 (clean) - mop water level. Documented as read-only (access
-    # "R"/"N" - no "W"): the spec gives no supported way to *set* this via
-    # a plain property write, so we only expose it for display.
+    # siid 18 (clean) - mop water level: 1 Low, 2 Medium, 3 High.
+    # The published spec marks it read-only, but the robot accepts a
+    # set_properties write (Mi Home offers it from firmware 1097; openHAB's
+    # miio binding writes it the same way). Older firmware rejects the write.
     mop_mode: int = field(
-        metadata={"siid": 18, "piid": 20, "access": ["read", "notify"]},
+        metadata={"siid": 18, "piid": 20, "access": ["read", "write", "notify"]},
         default=None,
     )
     last_clean: int = field(
@@ -996,6 +1001,21 @@ class DreameVacuum(MiotDevice):
     def set_fan_speed(self, speed):
         """Set fan speed."""
         return self.set_property(fan_speed=speed)
+
+    @command()
+    def set_mop_mode(self, level: int):
+        """Set mop water level (1 Low, 2 Medium, 3 High).
+
+        Raises DeviceException when the robot rejects the write (code != 0),
+        e.g. on firmware older than 1097.
+        """
+        if level not in MOP_MODE_NAMES:
+            raise DeviceException(f"Unknown mop water level: {level}")
+        result = self.set_property(mop_mode=level)
+        codes = [r.get("code") for r in result or [] if isinstance(r, dict)]
+        if any(code not in (0, None) for code in codes):
+            raise DeviceException(f"Robot rejected mop water level {level}: {result}")
+        return result
 
     # siid 2 (Battery) - aiid 1 Start Charge
     @command()
